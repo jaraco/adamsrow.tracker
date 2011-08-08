@@ -9,6 +9,7 @@ Things to remember when deploying an isapi_wsgi app:
 import sys
 import os
 import traceback
+import subprocess
 from textwrap import dedent
 
 import isapi_wsgi
@@ -84,18 +85,21 @@ def create_site():
 def appcmd(cmd, **kwargs):
 	if isinstance(cmd, basestring):
 		cmd = cmd.split()
-	args = ['/{key}:"{value}"' for key, value in kwargs.items()]
+	args = [
+		'/{key}:{value}'.format(**vars())
+		for key, value in kwargs.items()
+	]
 	return subprocess.check_call([
-		'\Windows\System32\InetSrv\appcmd.exe',
-		] + cmd + args
+		r'\Windows\System32\InetSrv\appcmd.exe',
+		] + cmd + args)
 
 def create_iis_site(root):
 	appcmd('add site',
-		id = '3',
-		name = 'Adams Row Tracker'
-		physicalPath = root
-		bindings = 'http://*:80:tracker.adamsrowcondo.org',
+		id = 4,
+		name = 'Adams Row Tracker',
+		physicalPath = root,
+		bindings = 'http/*:80:tracker.adamsrowcondo.org',
 	)
 	appcmd('add apppool', name="Adams Row Tracker")
-	appcmd(['set', 'app', 'Adams Row Tracker/',
-		applicationPool="Adams Row Tracker"])
+	appcmd(['set', 'app', 'Adams Row Tracker/'],
+		applicationPool="Adams Row Tracker")
