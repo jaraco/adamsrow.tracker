@@ -13,6 +13,11 @@ setup_params = dict(
 	setup_requires=[
 		'hgtools',
 	],
+	entry_points = dict(
+		console_scripts = [
+			'adams-row-tracker-create-site = adamsrow.tracker.isapi:create_site',
+		]
+	),
 )
 if __name__ == '__main__':
 	from setuptools import setup

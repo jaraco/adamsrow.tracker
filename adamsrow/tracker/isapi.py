@@ -9,6 +9,7 @@ Things to remember when deploying an isapi_wsgi app:
 import sys
 import os
 import traceback
+from textwrap import dedent
 
 import isapi_wsgi
 import isapi.install
@@ -64,3 +65,17 @@ def handle_command_line():
 		)
 	params.VirtualDirs = [vd]
 	isapi.install.HandleCommandLine(params)
+
+def create_site():
+	root = 'C:\\inetpub\\adams row tracker'
+	os.makedirs(root)
+	script = os.path.join(root, 'tracker.py')
+	open(script, 'w').write(dedent("""
+		from adamsrow.tracker.isapi import (
+			factory as __ExtensionFactory__,
+			handle_command_line, setup_environment,
+		)
+		setup_environment(__file__)
+		if __name__ == '__main__': handle_command_line()
+		"""))
+	#subprocess.check_call([sys.executable, script, 'install'])
