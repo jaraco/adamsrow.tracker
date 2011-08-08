@@ -7,6 +7,9 @@ setup_params = dict(
 	packages=find_packages(),
 	namespace_packages=['adamsrow'],
 	zip_safe=False,
+	install_requires=[
+		'roundup',
+	],
 	setup_requires=[
 		'hgtools',
 	],
