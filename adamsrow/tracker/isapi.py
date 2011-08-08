@@ -14,6 +14,7 @@ from textwrap import dedent
 
 import isapi_wsgi
 import isapi.install
+from roundup.cgi import wsgi_handler
 
 if hasattr(sys, "isapidllhandle"):
 	import win32traceutil
