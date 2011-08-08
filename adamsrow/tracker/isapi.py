@@ -72,6 +72,7 @@ def handle_command_line():
 def create_site():
 	root = 'C:\\inetpub\\adams row tracker'
 	# todo: create site using 'roundup-admin install' and edit config
+	# todo: Give AppPoolIdentity access to root
 	script = os.path.join(root, 'tracker.py')
 	open(script, 'w').write(dedent("""
 		from adamsrow.tracker.isapi import (
