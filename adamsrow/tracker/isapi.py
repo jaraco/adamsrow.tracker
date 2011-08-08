@@ -33,7 +33,8 @@ def setup_environment(entry_file):
 
 def setup_application():
 	import adamsrow.tracker
-	return adamsrow.tracker.init()
+	tracker_home = os.path.join(appdir)
+	return wsgi_handler.RequestDispatcher(tracker_home)
 
 def factory():
 	"The entry point for when the ISAPIDLL is triggered"
@@ -68,7 +69,7 @@ def handle_command_line():
 
 def create_site():
 	root = 'C:\\inetpub\\adams row tracker'
-	os.makedirs(root)
+	# todo: create site using 'roundup-admin install' and edit config
 	script = os.path.join(root, 'tracker.py')
 	open(script, 'w').write(dedent("""
 		from adamsrow.tracker.isapi import (
@@ -79,3 +80,22 @@ def create_site():
 		if __name__ == '__main__': handle_command_line()
 		"""))
 	#subprocess.check_call([sys.executable, script, 'install'])
+
+def appcmd(cmd, **kwargs):
+	if isinstance(cmd, basestring):
+		cmd = cmd.split()
+	args = ['/{key}:"{value}"' for key, value in kwargs.items()]
+	return subprocess.check_call([
+		'\Windows\System32\InetSrv\appcmd.exe',
+		] + cmd + args
+
+def create_iis_site(root):
+	appcmd('add site',
+		id = '3',
+		name = 'Adams Row Tracker'
+		physicalPath = root
+		bindings = 'http://*:80:tracker.adamsrowcondo.org',
+	)
+	appcmd('add apppool', name="Adams Row Tracker")
+	appcmd(['set', 'app', 'Adams Row Tracker/',
+		applicationPool="Adams Row Tracker"])

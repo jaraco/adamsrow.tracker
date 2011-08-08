@@ -9,6 +9,7 @@ setup_params = dict(
 	zip_safe=False,
 	install_requires=[
 		'roundup',
+		'pytz',
 	],
 	setup_requires=[
 		'hgtools',
