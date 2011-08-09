@@ -105,3 +105,9 @@ def create_iis_site(root):
 	appcmd('add apppool', name="Adams Row Tracker")
 	appcmd(['set', 'app', 'Adams Row Tracker/'],
 		applicationPool="Adams Row Tracker")
+
+# set permissions
+r"""
+icacls "C:\Inetpub\Adams Row Tracker" /grant "IIS AppPool\Adams Row Tracker:(OI)(CI)(IO)(F)"
+icacls "C:\Inetpub\Adams Row Tracker" /grant "IUSR:(OI)(CI)(IO)(F)"
+"""
