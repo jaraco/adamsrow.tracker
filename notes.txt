@@ -1,2 +1,19 @@
 To configure the mail gateway, I had to create a Scheduled Task, which
 I exported as "Adams Row Tracker Mail Gateway.xml".
+
+Later, I created this script that the scheduler runs:
+"""
+import sys
+
+import win32traceutil
+from roundup.scripts.roundup_mailgw import run
+
+print("Checking mail...")
+
+sys.argv[1:] = [
+	r"C:\Inetpub\Adams Row Tracker",
+	"pops",
+	"tracker@adamsrowcondo.org:33eanFqm@pop.gmail.com",
+]
+run()
+"""
