@@ -1,0 +1,2 @@
+To configure the mail gateway, I had to create a Scheduled Task, which
+I exported as "Adams Row Tracker Mail Gateway.xml".
