@@ -40,7 +40,7 @@ def nosyreaction(db, cl, nodeid, oldvalues):
     # send a copy of all new messages to the nosy list
     for msgid in determineNewMessages(cl, nodeid, oldvalues):
         try:
-            cl.nosymessage(nodeid, msgid, oldvalues)
+            cl.nosymessage(nodeid, msgid, oldvalues, bcc_emails=['management@adamsrowcondo.org'])
         except roundupdb.MessageSendError, message:
             raise roundupdb.DetectorError, message
 
