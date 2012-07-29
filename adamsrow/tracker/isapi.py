@@ -91,6 +91,7 @@ def create_site():
 	subprocess.check_call([sys.executable, script, 'install'])
 	print("Now create site using 'roundup-admin install' and edit "
 		"the config, or copy a previous instance.")
+	print("Also install the mail checker task")
 
 def appcmd(cmd, **kwargs):
 	if isinstance(cmd, basestring):
