@@ -1,0 +1,6 @@
+To install on windows:
+
+easy_install adamsrow.tracker
+adams-row-tracker-create-site
+copy or init the tracker
+import the scheduled task and then update the scheduled task to run as SYSTEM
