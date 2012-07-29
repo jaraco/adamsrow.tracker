@@ -78,7 +78,7 @@ def create_site():
 	if not os.path.isdir(root):
 		os.path.makedirs(root)
 	create_iis_site(root)
-	set_permissions()
+	set_permissions(root)
 	script = os.path.join(root, 'tracker.py')
 	open(script, 'w').write(dedent("""
 		from adamsrow.tracker.isapi import (
