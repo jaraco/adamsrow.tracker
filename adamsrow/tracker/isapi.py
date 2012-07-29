@@ -2,14 +2,17 @@ from __future__ import absolute_import, print_function
 
 """
 Things to remember when deploying an isapi_wsgi app:
- - easy_install munges permissions on zip eggs (the easiest solution is to just install them with -Z)
- - any dependency that's installed in a user folder (i.e. setup develop) will probably not work due to insufficient permissions
+	- easy_install munges permissions on zip eggs (the easiest solution is to
+		just install them with -Z)
+	- any dependency that's installed in a user folder (i.e. setup develop)
+		will probably not work due to insufficient permissions
 """
 
 import sys
 import os
 import traceback
 import subprocess
+import importlib
 from textwrap import dedent
 
 import isapi_wsgi
@@ -17,7 +20,9 @@ import isapi.install
 from roundup.cgi import wsgi_handler
 
 if hasattr(sys, "isapidllhandle"):
-	import win32traceutil
+	importlib.import_module('win32traceutil')
+
+appdir = None
 
 def setup_environment(entry_file):
 	"""
@@ -34,8 +39,7 @@ def setup_environment(entry_file):
 	os.chdir(appdir)
 
 def setup_application():
-	import adamsrow.tracker
-	tracker_home = os.path.join(appdir)
+	tracker_home = appdir
 	return wsgi_handler.RequestDispatcher(tracker_home)
 
 def factory():
@@ -70,9 +74,11 @@ def handle_command_line():
 	isapi.install.HandleCommandLine(params)
 
 def create_site():
-	root = 'C:\\inetpub\\adams row tracker'
-	# todo: create site using 'roundup-admin install' and edit config
-	# todo: Give AppPoolIdentity access to root
+	root = r'C:\Inetpub\Adams Row Tracker'
+	if not os.path.isdir(root):
+		os.path.makedirs(root)
+	create_iis_site(root)
+	set_permissions()
 	script = os.path.join(root, 'tracker.py')
 	open(script, 'w').write(dedent("""
 		from adamsrow.tracker.isapi import (
@@ -82,7 +88,9 @@ def create_site():
 		setup_environment(__file__)
 		if __name__ == '__main__': handle_command_line()
 		"""))
-	#subprocess.check_call([sys.executable, script, 'install'])
+	subprocess.check_call([sys.executable, script, 'install'])
+	print("Now create site using 'roundup-admin install' and edit "
+		"the config, or copy a previous instance.")
 
 def appcmd(cmd, **kwargs):
 	if isinstance(cmd, basestring):
@@ -106,8 +114,16 @@ def create_iis_site(root):
 	appcmd(['set', 'app', 'Adams Row Tracker/'],
 		applicationPool="Adams Row Tracker")
 
-# set permissions
-r"""
-icacls "C:\Inetpub\Adams Row Tracker" /grant "IIS AppPool\Adams Row Tracker:(OI)(CI)(IO)(F)"
-icacls "C:\Inetpub\Adams Row Tracker" /grant "IUSR:(OI)(CI)(IO)(F)"
-"""
+def set_permissions(root):
+	subprocess.check_call([
+		'icacls',
+		root,
+		'/grant',
+		'IIS AppPool\Adams Row Tracker:(OI)(CI)(IO)(F)',
+	])
+	subprocess.check_call([
+		'icacls',
+		root,
+		'/grant',
+		'IUSR:(OI)(CI)(IO)(F)',
+	])
