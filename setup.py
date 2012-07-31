@@ -8,7 +8,9 @@ setup_params = dict(
 	namespace_packages=['adamsrow'],
 	zip_safe=False,
 	install_requires=[
-		'roundup',
+		# currently, 1.4.19 is required because of the customizations to
+		#  nosy.
+		'roundup==1.4.19',
 		'pytz',
 	],
 	setup_requires=[
