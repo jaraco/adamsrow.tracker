@@ -75,7 +75,7 @@ def remove_all():
 
 @task
 def configure_nginx():
-	sudo('aptitude install -y nginx')
+	sudo('aptitude install -q -y nginx')
 	source = "ubuntu/nginx config"
 	target = gf("/etc/nginx/sites-available/{site_name}")
 	files.upload_template(filename=source, destination=target, use_sudo=True,

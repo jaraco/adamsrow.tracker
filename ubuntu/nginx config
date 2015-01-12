@@ -9,7 +9,7 @@ server {
         server_name {site_name} www.{site_name};
 
         location / {
-                proxy_pass http://jaraco-site-procs;
+                proxy_pass http://{proc_name}-procs;
                 proxy_redirect off;
                 proxy_set_header Host $host;
                 proxy_set_header X-Real-IP $remote_addr;
