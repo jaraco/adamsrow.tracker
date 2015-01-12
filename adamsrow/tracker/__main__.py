@@ -1,8 +1,11 @@
-from roundup.cgi.wsgi_handler import RequestDispatcher
+import os
 import wsgiref.simple_server
 
-tracker_home = './Adams Row Tracker'
+from roundup.cgi.wsgi_handler import RequestDispatcher
+
+tracker_home = '.'
 app = RequestDispatcher(tracker_home)
-httpd = wsgiref.simple_server.make_server('', 8000, app)
-print("Listening on port 8000....")
+port = int(os.environ.get('PORT', 8000))
+httpd = wsgiref.simple_server.make_server('', port, app)
+print("Listening on port {port}...".format(**locals()))
 httpd.serve_forever()
