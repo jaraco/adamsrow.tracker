@@ -78,7 +78,8 @@ def configure_nginx():
 	sudo('aptitude install -y nginx')
 	source = "ubuntu/nginx config"
 	target = gf("/etc/nginx/sites-available/{site_name}")
-	files.upload_template(filename=source, destination=target, use_sudo=True)
+	files.upload_template(filename=source, destination=target, use_sudo=True,
+		context=globals())
 	cmd = gf(
 		'ln -sf '
 		'../sites-available/{site_name} '
