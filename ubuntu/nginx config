@@ -6,7 +6,7 @@ server {
         listen 80;
         listen [::]:80;
 
-        server_name %(site_name)s www.%(site_name)s;
+        server_name tracker.%(site_name)s;
 
         location / {
                 proxy_pass http://%(proc_name)s-procs;
