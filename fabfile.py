@@ -5,7 +5,7 @@ To install on a clean Ubuntu Trusty box, simply run
 fab bootstrap
 """
 
-from fabric.api import sudo, run, task, env
+from fabric.api import sudo, run, task, env, put
 from fabric.contrib import files
 from jaraco.fabric import apt
 from jaraco.fabric import context
@@ -87,3 +87,12 @@ def configure_nginx():
 	)
 	sudo(cmd)
 	sudo('service nginx restart')
+
+@task
+def install_custom():
+	"""
+	Run this after installing the site
+	"""
+	source = '_custom/detectors/*'
+	target = '{install_root}/site/detectors/'.format(**globals())
+	put(local_path=source, remote_path=target, use_sudo=True)
