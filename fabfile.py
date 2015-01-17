@@ -115,4 +115,7 @@ def install_database(source='db'):
 	target.
 	"""
 	target = '{install_root}/site/db'.format(**globals())
+	if files.exists(target):
+		print("database already present")
+		return
 	files.put(local_path=source, remote_path=target, use_sudo=True)
