@@ -114,8 +114,8 @@ def install_database(source='db'):
 	After having copied the database to a local source, install it to the
 	target.
 	"""
-	target = '{install_root}/site/db'.format(**globals())
-	if files.exists(target):
+	target = '{install_root}/site'.format(**globals())
+	if files.exists(target+'/db'):
 		print("database already present")
 		return
 	files.put(local_path=source, remote_path=target, use_sudo=True)
