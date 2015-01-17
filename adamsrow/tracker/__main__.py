@@ -1,3 +1,5 @@
+from __future__ import print_function
+
 import os
 import argparse
 import wsgiref.simple_server
@@ -17,7 +19,8 @@ def run():
 
 	app = RequestDispatcher(args.site)
 	httpd = wsgiref.simple_server.make_server('', args.port, app)
-	print("Listening on port {port}...".format(**locals()))
+	print("Serving Roundup from", args.site)
+	print("Listening on port", args.port)
 	httpd.serve_forever()
 
 if __name__ == '__main__':
