@@ -15,6 +15,8 @@ import subprocess
 import importlib
 from textwrap import dedent
 
+import six
+
 import isapi_wsgi
 import isapi.install
 from roundup.cgi import wsgi_handler
@@ -94,7 +96,7 @@ def create_site():
 	print("Also install the mail checker task")
 
 def appcmd(cmd, **kwargs):
-	if isinstance(cmd, basestring):
+	if isinstance(cmd, six.string_types):
 		cmd = cmd.split()
 	args = [
 		'/{key}:{value}'.format(**vars())
