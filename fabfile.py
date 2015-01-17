@@ -107,3 +107,12 @@ def install_config():
 	password = keyring.get_password('Google', 'tracker@adamsrowcondo.org')
 	files.upload_template(filename=source, destination=target, use_sudo=True,
 		context=dict(email_password=password))
+
+@task
+def install_database(source='db'):
+	"""
+	After having copied the database to a local source, install it to the
+	target.
+	"""
+	target = '{install_root}/site/db'.format(**globals())
+	files.put(local_path=source, remote_path=target, use_sudo=True)
