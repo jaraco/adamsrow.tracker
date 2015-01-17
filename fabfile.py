@@ -96,3 +96,14 @@ def install_custom():
 	source = '_custom/detectors/*'
 	target = '{install_root}/site/detectors/'.format(**globals())
 	put(local_path=source, remote_path=target, use_sudo=True)
+
+@task
+def install_config():
+	"""
+	"""
+	source = '_custom/config.ini'
+	target = '{install_root}/site'.format(**globals())
+	keyring = __import__('keyring')
+	password = keyring.get_password('Google', 'tracker@adamsrowcondo.org')
+	files.upload_template(filename=source, destination=target, use_sudo=True,
+		context=dict(email_password=password))
