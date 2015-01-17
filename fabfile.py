@@ -17,7 +17,7 @@ from jaraco.util.string import (
 if not env.hosts:
 	env.hosts = ['elektra']
 
-install_root = '/opt/Adams Row Tracker'
+install_root = '/opt/tracker'
 proc_name = 'adams-row-tracker'
 site_name = 'adamsrowcondo.org'
 
@@ -47,7 +47,7 @@ def update(version=None):
 
 def install_to(root, version=None, use_sudo=False):
 	"""
-	Install jaraco.site to a PEP-370 environment at root. If version is
+	Install package to a PEP-370 environment at root. If version is
 	not None, install that version specifically. Otherwise, use the latest.
 	"""
 	action = sudo if use_sudo else run
